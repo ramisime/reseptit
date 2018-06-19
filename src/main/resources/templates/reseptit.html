@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Reseptit</title>
+  <meta charset="UTF-8" >
+</head>
+<body>
+
+    <h2>Reseptit</h2>
+  
+    <ul>
+        <li th:each="annos: ${reseptit}">
+            <a th:href="@{~/reseptikirja/{id}(id=${annos.id})}">
+                <span th:text="${annos.nimi}">Essi esimerkki</span>
+            </a>
+            <form method="POST" th:action="@{~/reseptikirja/delete/{id}(id=${annos.id})}">
+                <input type="submit" value="Poista"/>
+            </form>
+        </li>
+    </ul>
+
+    <h4>Lisää uusi</h4>
+  
+    <form method="POST" action="/reseptit">
+        Reseptin nimi:<br/>
+        <input type="text" name="resepti"/><br/>
+        <input type="submit" value="Lisää"/>
+    </form>
+
+    <h4>Lisää raaka-aineita</h4>
+
+    <form method="POST" action="/reseptit/ainekset">
+        Reseptin nimi:<br/>
+        <select name="annos">
+            <option th:each="annos: ${reseptit}" th:value="${annos.id}" 
+                    th:text="${annos.nimi}">reseptit</option>
+        </select>
+        <br/>
+        <br/>
+        Lisättävä raaka-aine<br/>
+        <select name="ainesosa">
+            <option th:each="raakaAine: ${raakaAineet}" th:value="${raakaAine.id}"
+                th:text="${raakaAine.nimi}">raakaAine</option>
+        </select>
+        <br/>
+        <br/>
+        Järjestys<br/>
+            <input type="text" name="jarjestys"/><br/><br/>
+        Määrä<br/>
+            <input type="text" name="maara"/><br/><br/>
+        Yksikkö<br/>
+            <input type="text" name="yksikko"/><br/><br/>
+        Ohje<br/>
+            <input type="text" name="ohje"/><br/><br/>
+            <input type="submit" value="Lisää"/>
+    </form>
+
+    <ul>
+      <li>
+        <a href="../reseptikirja">Reseptilistaukseen</a>
+      </li>
+    </ul>
+</html>
