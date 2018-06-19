@@ -30,7 +30,7 @@ public class Main {
         RaakaAineDao raakaAineet = new RaakaAineDao(database);
         AnnosRaakaAineDao reseptit = new AnnosRaakaAineDao(database);
 
-        Spark.get("/reseptikirja", (req, res) -> {
+        Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("annokset", annokset.findAll());
             map.put("raakaAineet", raakaAineet.findAll());
@@ -38,7 +38,7 @@ public class Main {
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
         
-        Spark.post("/reseptikirja/delete/:id", (req, res) -> {
+        Spark.post("/delete/:id", (req, res) -> {
             Integer id = Integer.parseInt(req.params(":id"));
             
             annokset.delete(id);
@@ -89,10 +89,15 @@ public class Main {
             return new ModelAndView(map, "reseptit");
         }, new ThymeleafTemplateEngine());
         
+        Spark.get("/ainekset", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("raakaAineet", raakaAineet.findAll());
+
+            return new ModelAndView(map, "ainekset");
+        }, new ThymeleafTemplateEngine());
         
         
-        
-        Spark.get("/reseptikirja/:id", (req, res) -> {
+        Spark.get("/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             Integer id = Integer.parseInt(req.params(":id"));
             map.put("annos", annokset.findOne(id));
@@ -101,13 +106,6 @@ public class Main {
             return new ModelAndView(map, "resepti");
         }, new ThymeleafTemplateEngine());
         
-        
-        Spark.get("/ainekset", (req, res) -> {
-            HashMap map = new HashMap<>();
-            map.put("raakaAineet", raakaAineet.findAll());
-
-            return new ModelAndView(map, "ainekset");
-        }, new ThymeleafTemplateEngine());
         
         
         Spark.post("/ainekset/delete/:id", (req, res) -> {
